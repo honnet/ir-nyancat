@@ -1,7 +1,5 @@
 import processing.serial.*;
 
-Serial myPort;  // Create object from Serial class
-String val;      // Data received from the serial port
 float h = 100;
 float targetH;
 float easing = 0.05;
@@ -22,31 +20,18 @@ void setup()
   img = loadImage("nyan-cat.png");
   tail = loadImage("nyan-cat-tail.png");
   arrayH = new float[163];
-  
-  // open port
-  String portName = Serial.list()[0];
-  myPort = new Serial(this, portName, 9600);
 }
 
 void draw()
 {
-  // read data
-  if ( myPort.available() > 0) {
-    val = myPort.readString();
-  }
-  
   // background
   if ( bgPos > 400 ) bgPos = 0;
   image(bg, -bgPos, 0);
   image(bg, 400 - bgPos, 0);
   
-  // smooth the data received
-  if ( val != null ){
-    float tmp = float(val);
-    if (!Float.isNaN(tmp) && tmp > 90 && tmp < 550 ) {
-      targetH = tmp;
+    if (mouseY > 90 && mouseY < 550 ) {
+      targetH = mouseY;
     }
-  }
   
   // add easing to the movment
   float dh = targetH - h;
